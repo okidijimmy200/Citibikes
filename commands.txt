@@ -1,0 +1,8 @@
+>conda create -n multi-domain-sentiment python 3.11
+
+>conda activate
+
+>prefect server start
+
+register a block for prefect
+>prefect block register -m prefect_gcp

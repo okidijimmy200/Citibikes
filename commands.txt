@@ -2,7 +2,28 @@
 
 >conda activate
 
->prefect server start
+>prefect server start // prefect orion start
 
 register a block for prefect
 >prefect block register -m prefect_gcp
+
+
+deployments
+prefect deployment build ./main.py:parent_flow -n "Parametized deployment"
+
+apply deployments
+prefect deployment apply parent_flow-deployment.yaml
+
+#create a deployment with a cron scedule
+prefect deployment build main.py:parent_flow -n parent_flow2 --cron "0 0 * * *" -a
+
+#build docker image
+docker image build -t okidijimmyjones/citibikes .
+
+#set prefect api
+prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
+
+#fire up an agent
+prefect agent start -q default
+
+prefect deployment run parent-flow/docker-flow -p "months=[1,2]"

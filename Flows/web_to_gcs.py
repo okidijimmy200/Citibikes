@@ -16,8 +16,9 @@ def fetch(dataset_url: str) -> pd.DataFrame:
 @task(log_prints=True)
 def clean(df = pd.DataFrame) -> pd.DataFrame:
     """fix dtype issues"""
-    df['starttime'] = pd.to_datetime(df['starttime'])
-    df['stoptime'] = pd.to_datetime(df['stoptime'])
+    date_format = "%Y-%m-%d %H:%M:%S"
+    df['starttime'] = pd.to_datetime(df['starttime'], format=date_format)
+    df['stoptime'] = pd.to_datetime(df['stoptime'], format=date_format)
     print(df.head(2))
     print(f"columns: {df.dtypes}")
     print(f"rows: {len(df)}")
@@ -33,7 +34,7 @@ def write_local(df: pd.DataFrame, dataset_file: str) -> pd.DataFrame:
 @task
 def write_gcs(path: Path) -> None:
     """upload paquet to gcs"""
-    gcs_block = GcsBucket.load("citibikes-block")
+    gcs_block = GcsBucket.load("citibikes-demo")
     gcs_block.upload_from_path(
         from_path=f"{path}",
         to_path=path

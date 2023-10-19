@@ -1,4 +1,8 @@
+prefect==2.13.7
 pandas==1.5.2
 prefect-gcp[cloud_storage]==0.2.3
 protobuf==4.21.11
+setuptools==57.5.0
+wheel==0.37.0
 pyarrow==10.0.1
+pytest==7.4.2

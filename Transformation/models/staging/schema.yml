@@ -1,0 +1,11 @@
+
+version: 2
+
+sources:
+  - name: staging
+    database: red-atlas-389804
+    schema: dbt_training
+
+    tables:
+      - name: Citibikes
+

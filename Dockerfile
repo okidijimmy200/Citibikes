@@ -1,25 +1,28 @@
-# Stage 1: Build the application
-FROM prefecthq/prefect:2.7.7-python3.9 AS builder
+FROM python:3.9-alpine as builder
 
-# Set the working directory
-WORKDIR /opt/prefect
+WORKDIR /app
 
-# Copy the application code into the container
-COPY . /opt/prefect
+COPY docker-requirements.txt .
 
-# Install dependencies
-RUN pip install -r docker-requirements.txt --trusted-host pypi.python.org --no-cache-dir
+RUN apk add --no-cache g++ gcc libgfortran musl-dev build-base cmake linux-headers libffi-dev  && \
+    python -m venv /venv && \
+    /venv/bin/pip install -r docker-requirements.txt
+
+COPY . .
 
 # Stage 2: Create the final image with only necessary files
-FROM prefecthq/prefect:2.7.7-python3.9
+FROM python:3.9-alpine
 
-# Set the working directory
-WORKDIR /opt/prefect
-
-# Copy the application code and installed dependencies from the builder stage
-COPY --from=builder /opt/prefect /opt/prefect
+WORKDIR /app
 
 
+COPY --from=builder /venv /venv
+COPY --from=builder /app /app
 
+# Add /venv/bin to PATH to ensure that installed dependencies are available
+ENV PATH="/venv/bin:$PATH"
 
+EXPOSE 4200
 
+# Your application entry point
+CMD [ "prefect", "server", "start" ]

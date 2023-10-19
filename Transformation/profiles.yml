@@ -1,0 +1,14 @@
+default:
+  outputs:
+    prod:
+      type: bigquery
+      method: service-account
+      project: [red-atlas-389804]
+      dataset: [dbt_training]
+      threads: [1 or more]
+      keyfile: [/home/jimmy/.ssh/red-atlas-389804-b6bcbdec72ff.json]
+      timeout_seconds: 300
+      priority: interactive
+      retries: 1
+
+  target: prod

@@ -27,3 +27,11 @@ prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
 prefect agent start -q default
 
 prefect deployment run parent-flow/docker-flow -p "months=[1,2]"
+
+#to run the prefect docker container outside 
+
+>ngrok http 4200
+
+>prefect config set PREFECT_API_URL=<ngrok_url/api>
+
+>prefect orion start

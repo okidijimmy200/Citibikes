@@ -10,9 +10,9 @@ from prefect_gcp import GcpCredentials
 def extract_from_gcs(year: int, month: int) -> Path:
     """download citibikes data from gcs"""
     gcs_path = f"Src/{year}{month:02}-citibike-tripdata.zip.parquet"
-    gcs_block = GcsBucket.load("citibikes-block")
-    gcs_block.get_directory(from_path=gcs_path, local_path=f"../")
-    return Path(f"../{gcs_path}")
+    gcs_block = GcsBucket.load("citibikes-demo")
+    gcs_block.get_directory(from_path=gcs_path, local_path=f"./")
+    return Path(f"{gcs_path}")
 
 @task()
 def transform(path: Path) -> pd.DataFrame:
@@ -27,7 +27,7 @@ def write_bq(df: pd.DataFrame) -> None:
     """wrtie DataFrame to big query"""
 
     # load gcp cred block
-    gcp_credentials_block = GcpCredentials.load("citibikes-gcp-creds")
+    gcp_credentials_block = GcpCredentials.load("citibikes-demo-cred")
 
     df.to_gbq(
         destination_table='dbt_training.Citibikes',

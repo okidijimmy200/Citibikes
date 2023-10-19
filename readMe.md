@@ -10,7 +10,7 @@ To move to ETL, we use dbt to extract the datasets from bigquery and perform dat
 Finally we use looker to analysis the data 
 
 ![](images/image.png)
-![](images/image(1).png)
+![](images/image (1).png)
 
 
 
